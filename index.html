@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUNY College Comparison Checklist</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-dark: #1e1e1e;
+            --input-dark: #2d2d2d;
+            --text-light: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --accent: #5e72e4;
+            --accent2: #1ea896;
+            --success: #2dce89;
+            --warning: #fb6340;
+            --danger: #f5365c;
+            --cobleskill: #036936;
+            --oswego: #003f87;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-light);
+            background-color: var(--bg-dark);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-value {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .section {
+            background-color: var(--card-dark);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.5s forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section:nth-child(3) { animation-delay: 0.1s; }
+        .section:nth-child(4) { animation-delay: 0.2s; }
+        .section:nth-child(5) { animation-delay: 0.3s; }
+        .section:nth-child(6) { animation-delay: 0.4s; }
+        .section:nth-child(7) { animation-delay: 0.5s; }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .section-icon {
+            font-size: 24px;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .item:hover {
+            transform: translateX(5px);
+        }
+        
+        label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        input[type="checkbox"]:checked + .custom-checkbox {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        input[type="checkbox"]:checked + .custom-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+        }
+        
+        .priority {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .high { background-color: var(--danger); }
+        .medium { background-color: var(--warning); }
+        .low { background-color: var(--success); }
+        
+        .comparison-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .school-column {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .cobleskill {
+            background-color: rgba(3, 105, 54, 0.1);
+            border-left: 3px solid var(--cobleskill);
+        }
+        
+        .oswego {
+            background-color: rgba(0, 63, 135, 0.1);
+            border-left: 3px solid var(--oswego);
+        }
+        
+        .school-header {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+        
+        .cobleskill .school-header {
+            color: rgb(3, 180, 93);
+        }
+        
+        .oswego .school-header {
+            color: rgb(0, 120, 255);
+        }
+        
+        .school-insight {
+            background-color: rgba(45, 206, 137, 0.1);
+            border-left: 3px solid var(--success);
+            padding: 10px;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            background-color: var(--input-dark);
+            color: var(--text-light);
+            font-family: inherit;
+            margin-top: 5px;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .contact {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .contact:hover {
+            transform: translateX(5px);
+        }
+        
+        .contact strong {
+            color: var(--accent);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button[type="reset"] {
+            background: linear-gradient(135deg, var(--danger), #ff7675);
+        }
+    </style>
+</head>
+<body>
+    <h1>SUNY College Comparison Checklist</h1>
+    <p class="tagline">Your guide to comparing SUNY Cobleskill and SUNY Oswego</p>
+    
+    <div class="progress-bar">
+        <div class="progress-value" id="progress"></div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">📚</span>
+            <h2>Academic Programs</h2>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Major/program availability
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Known for outstanding programs in Agricultural Business, Culinary Arts, and Wildlife Management with a practical, hands-on approach.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Recognized for strong programs in Meteorology, Business, Education and Media studies with 110+ undergraduate and graduate programs.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority medium"></span>
+                Student-to-faculty ratio
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Maintains a smaller 17:1 student-to-faculty ratio, allowing for more personalized instruction and mentoring.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Offers a 17:1 student-to-faculty ratio, balancing individual attention with a more diverse campus community.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Hands-on learning opportunities
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Emphasizes applied learning with 782-acre working farm, state-of-the-art culinary facilities, and specialized labs.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Features modern facilities like the Shineman Science Center, broadcasting studios, and dedicated internship programs.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Job placement rate
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Strong industry connections in agriculture, food systems, and environmental fields, with high placement rates for technical programs.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Boasts strong alumni network and career services with particularly high placement rates for business, education, and STEM graduates.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">🏠</span>
+            <h2>Campus Life</h2>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Housing options
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Five residence halls with options from traditional dorms to suite-style living in a rural setting with close-knit community feel.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">13 residence halls including themed living communities and lakeside residence halls with stunning views of Lake Ontario.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority medium"></span>
+                Meal plans
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Dining services feature farm-to-table options with ingredients from the college's own farm and culinary program influence.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Multiple dining centers across campus with flexible meal plans, special dietary accommodations, and late-night options.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority medium"></span>
+                Campus security
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Small-town setting with 24/7 campus police, blue light system, and typically low crime statistics.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">University Police available 24/7 with comprehensive safety systems, escort services, and emergency notification network.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">💰</span>
+            <h2>Financial Considerations</h2>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Total cost of attendance
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Generally has a lower overall cost with affordable tuition and lower cost of living in a rural area.</div>
+                    <input type="text" placeholder="$ Amount...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Standard SUNY tuition rates with higher housing costs but typically more financial aid opportunities available.</div>
+                    <input type="text" placeholder="$ Amount...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Scholarships
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Specialized scholarships for agriculture, culinary, and technical programs with generous industry support.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Broad scholarship options including Presidential Scholarships worth up to $5,000 annually and specialty program awards.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>
+                <input type="checkbox" class="checklist-item">
+                <span class="custom-checkbox"></span>
+                <span class="priority high"></span>
+                Financial aid
+            </label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <div class="school-insight">Over 80% of students receive some form of financial aid with significant opportunities for work-study in applied learning settings.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <div class="school-insight">Award-winning financial aid office that processes over $80 million in aid annually with dedicated counseling services.</div>
+                    <input type="text" placeholder="Notes...">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">📝</span>
+            <h2>Summary</h2>
+        </div>
+        
+        <div class="item">
+            <label>Top 3 impressions for each school:</label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <textarea placeholder="1. &#13;&#10;2. &#13;&#10;3. "></textarea>
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <textarea placeholder="1. &#13;&#10;2. &#13;&#10;3. "></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>Pros for each school:</label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <textarea placeholder="+ &#13;&#10;+ &#13;&#10;+ "></textarea>
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <textarea placeholder="+ &#13;&#10;+ &#13;&#10;+ "></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>Cons for each school:</label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <textarea placeholder="- &#13;&#10;- &#13;&#10;- "></textarea>
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <textarea placeholder="- &#13;&#10;- &#13;&#10;- "></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>Overall rating (1-10):</label>
+            <div class="comparison-grid">
+                <div class="school-column cobleskill">
+                    <div class="school-header">SUNY Cobleskill</div>
+                    <input type="number" min="1" max="10">
+                </div>
+                <div class="school-column oswego">
+                    <div class="school-header">SUNY Oswego</div>
+                    <input type="number" min="1" max="10">
+                </div>
+            </div>
+        </div>
+        
+        <div class="item">
+            <label>Decision deadline:</label>
+            <input type="date">
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">📞</span>
+            <h2>Important Contacts</h2>
+        </div>
+        
+        <div class="comparison-grid">
+            <div class="school-column cobleskill">
+                <div class="school-header">SUNY Cobleskill</div>
+                <div class="contact">
+                    <strong>Admissions:</strong> 518-255-5525, admissions@cobleskill.edu
+                </div>
+                <div class="contact">
+                    <strong>Financial Aid:</strong> 518-255-5623, finaid@cobleskill.edu
+                </div>
+                <div class="contact">
+                    <strong>Student Life:</strong> 518-255-5215, studentlife@cobleskill.edu
+                </div>
+            </div>
+            <div class="school-column oswego">
+                <div class="school-header">SUNY Oswego</div>
+                <div class="contact">
+                    <strong>Admissions:</strong> 315-312-2250, admiss@oswego.edu
+                </div>
+                <div class="contact">
+                    <strong>Financial Aid:</strong> 315-312-2248, finaid@oswego.edu
+                </div>
+                <div class="contact">
+                    <strong>Student Life:</strong> 315-312-5483, studentaffairs@oswego.edu
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="btn-container">
+        <button type="button" id="saveBtn">Save Form</button>
+        <button type="button" id="printBtn">Print Form</button>
+        <button type="reset" id="resetBtn">Reset Form</button>
+    </div>
+
+    <script>
+        // Update progress bar based on completed items
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.checklist-item');
+            const total = checkboxes.length;
+            let completed = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    completed++;
+                }
+            });
+            
+            const percentage = (completed / total) * 100;
+            document.getElementById('progress').style.width = `${percentage}%`;
+        }
+        
+        // Add event listeners to checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                item.addEventListener('change', updateProgress);
+            });
+            
+            // Initialize buttons
+            document.getElementById('saveBtn').addEventListener('click', saveForm);
+            document.getElementById('printBtn').addEventListener('click', printForm);
+            document.getElementById('resetBtn').addEventListener('click', confirmReset);
+            
+            // Load saved data if available
+            loadForm();
+            
+            // Initialize progress bar
+            updateProgress();
+        });
+        
+        // Save form data to local storage
+        function saveForm() {
+            const form = document.querySelectorAll('input, textarea');
+            const data = {};
+            
+            form.forEach((field, index) => {
+                if (field.type === 'checkbox') {
+                    data[`checkbox_${index}`] = field.checked;
+                } else {
+                    data[`field_${index}`] = field.value;
+                }
+            });
+            
+            localStorage.setItem('collegeChecklist', JSON.stringify(data));
+            
+            // Show save confirmation with animation
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerText;
+            saveBtn.innerText = "Saved!";
+            saveBtn.style.background = "linear-gradient(135deg, var(--success), #20a779)";
+            
+            setTimeout(() => {
+                saveBtn.innerText = originalText;
+                saveBtn.style.background = "";
+            }, 2000);
+        }
+        
+        // Load form data from local storage
+        function loadForm() {
+            const saved = localStorage.getItem('collegeChecklist');
+            
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    const form = document.querySelectorAll('input, textarea');
+                    
+                    form.forEach((field, index) => {
+                        if (field.type === 'checkbox') {
+                            field.checked = data[`checkbox_${index}`] || false;
+                        } else if (field.type !== 'button' && field.type !== 'submit' && field.type !== 'reset') {
+                            field.value = data[`field_${index}`] || '';
+                        }
+                    });
+                    
+                    updateProgress();
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                }
+            }
+        }
+        
+        // Print the form
+        function printForm() {
+            window.print();
+        }
+        
+        // Reset confirmation
+        function confirmReset(e) {
+            if (confirm('Are you sure you want to reset the form? All entered data will be lost.')) {
+                document.querySelectorAll('input, textarea').forEach(field => {
+                    if (field.type === 'checkbox') {
+                        field.checked = false;
+                    } else if (field.type !== 'button' && field.type !== 'submit' && field.type !== 'reset') {
+                        field.value = '';
+                    }
+                });
+                updateProgress();
+                localStorage.removeItem('collegeChecklist');
+            } else if (e) {
+                e.preventDefault();
+            }
+        }
+    </script>
+</body>
+</html>
